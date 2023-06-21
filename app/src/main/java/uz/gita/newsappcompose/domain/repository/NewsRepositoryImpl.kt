@@ -8,6 +8,7 @@ import uz.gita.newsappcompose.data.response.NewsData
 import uz.gita.newsappcompose.data.source.remote.Api
 import uz.gita.newsappcompose.utils.API_KEY
 import uz.gita.newsappcompose.utils.COUNTRY
+import uz.gita.newsappcompose.utils.logger
 import javax.inject.Inject
 
 class NewsRepositoryImpl @Inject constructor(
@@ -19,12 +20,12 @@ class NewsRepositoryImpl @Inject constructor(
         val response = api.getLatestNews(API_KEY, COUNTRY)
 
         when (response.code()) {
-            in 200..300 -> {
+            in 200..299 -> {
                 trySend(Result.success(response.body() as NewsData))
             }
 
             else -> {
-                trySend(Result.failure(Exception((response.errorBody() as ErrorResponse).message)))
+                trySend(Result.failure(Exception(response.errorBody()?.string())))
             }
         }
         awaitClose()
