@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.hilt.getViewModel
@@ -22,6 +23,7 @@ import uz.gita.newsappcompose.presentation.component.LoadingComponent
 import uz.gita.newsappcompose.presentation.component.NewsItemComponent
 import uz.gita.newsappcompose.ui.theme.NewsAppComposeTheme
 import uz.gita.newsappcompose.utils.logger
+import uz.gita.newsappcompose.utils.toast
 
 object HomePage : Tab {
     override val options: TabOptions
@@ -46,6 +48,8 @@ object HomePage : Tab {
         val viewModel: HomeContract.ViewModel = getViewModel<HomeViewModel>()
         val uiState = viewModel.collectAsState()
 
+        val context = LocalContext.current
+
         NewsAppComposeTheme {
             Surface(modifier = Modifier.fillMaxSize()) {
                 Scaffold(
@@ -64,6 +68,7 @@ object HomePage : Tab {
             when (it) {
                 is HomeContract.SideEffect.HasError -> {
                     logger("HomePageScreen Error = " + it.message)
+                    toast(context, it.message)
                 }
             }
         }

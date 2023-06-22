@@ -4,9 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -34,42 +33,42 @@ fun NewsItemComponent(
     Card(modifier = modifier.fillMaxWidth()) {
 
         Column(modifier = Modifier.padding(8.dp)) {
-            Row {
-                AsyncImage(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(20.dp)),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(result.image_url)
-                        .crossfade(true)
-                        .build(),
-                    placeholder = painterResource(id = R.drawable.imageplaceholder),
-                    error = painterResource(id = R.drawable.noimage),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                )
-                Column(
-                    modifier = Modifier
-                        .width(0.dp)
-                        .weight(1f)
-                        .padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = result.title,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        fontSize = 18.sp,
-                        color = Color.Black
-                    )
+            AsyncImage(
+                alignment = Alignment.TopCenter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(result.image_url)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = R.drawable.imageplaceholder),
+                error = painterResource(id = R.drawable.image),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+            )
 
-                    Text(
-                        text = result.description,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                Text(
+                    text = result.title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+
+                Text(
+                    text = result.description,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
             }
 
             Row(
