@@ -43,7 +43,7 @@ fun NewsItemComponent(
                     .data(result.image_url)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(id = R.drawable.imageplaceholder),
+                placeholder = painterResource(id = R.drawable.image),
                 error = painterResource(id = R.drawable.image),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,

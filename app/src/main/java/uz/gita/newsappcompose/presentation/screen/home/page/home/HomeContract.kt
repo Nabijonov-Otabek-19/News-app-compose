@@ -2,6 +2,7 @@ package uz.gita.newsappcompose.presentation.screen.home.page.home
 
 import org.orbitmvi.orbit.ContainerHost
 import uz.gita.newsappcompose.data.response.NewsData
+import uz.gita.newsappcompose.data.response.Result
 
 interface HomeContract {
 
@@ -23,6 +24,6 @@ interface HomeContract {
     }
 
     interface Direction {
-
+        suspend fun navigateToReadScreen(result: Result)
     }
 }
