@@ -1,6 +1,5 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -13,6 +12,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
@@ -83,23 +83,9 @@ fun TopBar(
         modifier = modifier
             .height(56.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            modifier = Modifier
-                .padding(horizontal = 16.dp),
-            painter = painterResource(id = R.drawable.ic_menu),
-            contentDescription = null
-        )
-
-        Image(
-            modifier = Modifier
-                .size(65.dp)
-                .padding(horizontal = 16.dp),
-            painter = painterResource(id = R.drawable.ic_profile),
-            contentDescription = null
-        )
+        Text(text = "News app", fontSize = 20.sp, modifier = Modifier.padding(start = 16.dp))
     }
 }
 
@@ -127,7 +113,9 @@ fun HomePageContent(
                         NewsItemComponent(
                             data.results[it],
                             Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-                        )
+                        ) { data ->
+                            onEventDispatcher.invoke(HomeContract.Intent.OpenReadScreen(data))
+                        }
                     }
                 }
             }

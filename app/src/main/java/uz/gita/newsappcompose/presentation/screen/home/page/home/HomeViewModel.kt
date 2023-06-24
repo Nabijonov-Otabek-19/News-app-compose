@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: NewsRepository
+    private val repository: NewsRepository,
+    private val direction: HomeDirection
 ) : ViewModel(), HomeContract.ViewModel {
 
     override val container =
@@ -37,6 +39,12 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 }.launchIn(viewModelScope)
+            }
+
+            is HomeContract.Intent.OpenReadScreen -> {
+                viewModelScope.launch {
+                    direction.navigateToReadScreen(intent.result)
+                }
             }
         }
     }

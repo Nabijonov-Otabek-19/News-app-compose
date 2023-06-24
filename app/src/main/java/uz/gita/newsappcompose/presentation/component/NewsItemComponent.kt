@@ -1,5 +1,6 @@
 package uz.gita.newsappcompose.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,9 +29,12 @@ import uz.gita.newsappcompose.data.response.Result
 @Composable
 fun NewsItemComponent(
     result: Result,
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: (Result) -> Unit
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(modifier = modifier
+        .fillMaxWidth()
+        .clickable { onClick.invoke(result) }) {
 
         Column(modifier = Modifier.padding(8.dp)) {
             AsyncImage(

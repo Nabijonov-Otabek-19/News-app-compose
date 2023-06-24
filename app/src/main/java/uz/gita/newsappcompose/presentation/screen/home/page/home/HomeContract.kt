@@ -21,6 +21,7 @@ interface HomeContract {
 
     sealed interface Intent {
         object LoadLatestNews : Intent
+        class OpenReadScreen(val result: Result) : Intent
     }
 
     interface Direction {
