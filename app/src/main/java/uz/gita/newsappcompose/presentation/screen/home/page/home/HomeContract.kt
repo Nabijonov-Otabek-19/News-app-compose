@@ -2,7 +2,7 @@ package uz.gita.newsappcompose.presentation.screen.home.page.home
 
 import org.orbitmvi.orbit.ContainerHost
 import uz.gita.newsappcompose.data.response.NewsData
-import uz.gita.newsappcompose.data.response.Result
+import uz.gita.newsappcompose.data.response.ResultData
 
 interface HomeContract {
 
@@ -21,10 +21,10 @@ interface HomeContract {
 
     sealed interface Intent {
         object LoadLatestNews : Intent
-        class OpenReadScreen(val result: Result) : Intent
+        class OpenReadScreen(val resultData: ResultData) : Intent
     }
 
     interface Direction {
-        suspend fun navigateToReadScreen(result: Result)
+        suspend fun navigateToReadScreen(resultData: ResultData)
     }
 }

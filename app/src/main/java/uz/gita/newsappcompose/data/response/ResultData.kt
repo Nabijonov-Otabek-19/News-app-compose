@@ -1,6 +1,8 @@
 package uz.gita.newsappcompose.data.response
 
-data class Result(
+import uz.gita.newsappcompose.data.source.local.entity.ResultEntity
+
+data class ResultData(
     val category: List<String>,
     val content: String,
     val country: List<String>,
@@ -14,4 +16,9 @@ data class Result(
     val source_id: String,
     val title: String,
     val video_url: Any
-)
+) {
+    fun toEntity() = ResultEntity(
+        content = content, description = description, image_url = image_url,
+        language = language, link = link, pubDate = pubDate, source_id = source_id, title = title
+    )
+}

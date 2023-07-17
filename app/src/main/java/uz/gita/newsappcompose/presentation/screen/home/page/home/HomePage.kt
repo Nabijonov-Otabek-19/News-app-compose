@@ -1,5 +1,6 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -52,9 +53,7 @@ object HomePage : Tab {
 
         NewsAppComposeTheme {
             Surface(modifier = Modifier.fillMaxSize()) {
-                Scaffold(
-                    topBar = { TopBar() }
-                ) {
+                Scaffold(topBar = { TopBar() }) {
                     HomePageContent(
                         uiState = uiState,
                         onEventDispatcher = viewModel::onEventDispatcher,
@@ -76,9 +75,7 @@ object HomePage : Tab {
 }
 
 @Composable
-fun TopBar(
-    modifier: Modifier = Modifier
-) {
+fun TopBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .height(56.dp)
@@ -107,14 +104,21 @@ fun HomePageContent(
             is HomeContract.UIState.PrepareData -> {
                 val data = (uiState.value as HomeContract.UIState.PrepareData).newsData
 
-                LazyColumn {
-
-                    items(data.results.size) {
-                        NewsItemComponent(
-                            data.results[it],
-                            Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-                        ) { data ->
-                            onEventDispatcher.invoke(HomeContract.Intent.OpenReadScreen(data))
+                if (data.resultData.isNullOrEmpty()) {
+                    Image(
+                        modifier = Modifier.align(Alignment.Center),
+                        painter = painterResource(id = R.drawable.ic_no_news),
+                        contentDescription = null
+                    )
+                } else {
+                    LazyColumn {
+                        items(data.resultData.size) {
+                            NewsItemComponent(
+                                data.resultData[it],
+                                Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                            ) { data ->
+                                onEventDispatcher.invoke(HomeContract.Intent.OpenReadScreen(data))
+                            }
                         }
                     }
                 }

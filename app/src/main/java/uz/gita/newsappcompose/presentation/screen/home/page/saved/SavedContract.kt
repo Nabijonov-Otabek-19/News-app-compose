@@ -1,19 +1,29 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.saved
 
 import org.orbitmvi.orbit.ContainerHost
+import uz.gita.newsappcompose.data.response.ResultData
 
 interface SavedContract {
 
-    interface Model : ContainerHost<UIState, SideEffect> {
-        fun eventDispatcher(intent: Intent)
+    interface ViewModel : ContainerHost<UIState, SideEffect> {
+        fun onEventDispatcher(intent: Intent)
     }
 
     sealed interface Intent {
         object LoadLatestNews : Intent
+        class OpenReadScreen(val resultData: ResultData) : Intent
     }
 
-    sealed interface UIState {}
+    sealed interface UIState {
+        object Loading : UIState
+        data class PrepareData(val resultData: List<ResultData>) : UIState
+    }
 
-    sealed interface SideEffect {}
+    sealed interface SideEffect {
+        data class HasError(val message: String) : SideEffect
+    }
 
+    interface Direction {
+        suspend fun navigateToReadScreen(resultData: ResultData)
+    }
 }

@@ -1,17 +1,10 @@
 package uz.gita.newsappcompose.presentation.screen.home
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -19,6 +12,7 @@ import cafe.adriel.voyager.navigator.tab.TabNavigator
 import uz.gita.newsappcompose.navigation.AppScreen
 import uz.gita.newsappcompose.presentation.screen.home.page.home.HomePage
 import uz.gita.newsappcompose.presentation.screen.home.page.saved.SavedPage
+import uz.gita.newsappcompose.ui.theme.Light_Blue
 import uz.gita.newsappcompose.ui.theme.NewsAppComposeTheme
 
 class HomeScreen : AppScreen() {
@@ -39,7 +33,7 @@ class HomeScreen : AppScreen() {
                             }
                         },
                         bottomBar = {
-                            NavigationBar(modifier = Modifier) {
+                            NavigationBar(modifier = Modifier, containerColor = Color.Blue) {
                                 TabNavigationItem(tab = HomePage)
                                 TabNavigationItem(tab = SavedPage)
                             }
@@ -56,6 +50,11 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
     val tabNavigator = LocalTabNavigator.current
 
     NavigationBarItem(
+        colors = NavigationBarItemDefaults.colors(
+            selectedIconColor = Light_Blue,
+            unselectedIconColor = Color.White,
+            indicatorColor = Color.White
+        ),
         selected = tabNavigator.current == tab,
         onClick = { tabNavigator.current = tab },
         icon = { Icon(painter = tab.options.icon!!, contentDescription = tab.options.title) }
