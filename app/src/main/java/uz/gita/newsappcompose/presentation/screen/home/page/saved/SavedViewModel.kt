@@ -31,7 +31,7 @@ class SavedViewModel @Inject constructor(
 
             is SavedContract.Intent.OpenReadScreen -> {
                 viewModelScope.launch {
-                    direction.navigateToReadScreen(intent.resultData)
+                    direction.navigateToReadScreen(intent.result)
                 }
             }
         }

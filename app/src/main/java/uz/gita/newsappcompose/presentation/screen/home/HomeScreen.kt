@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -33,7 +34,11 @@ class HomeScreen : AppScreen() {
                             }
                         },
                         bottomBar = {
-                            NavigationBar(modifier = Modifier, containerColor = Color.Blue) {
+                            NavigationBar(
+                                modifier = Modifier
+                                    .height(70.dp),
+                                containerColor = Color.Blue
+                            ) {
                                 TabNavigationItem(tab = HomePage)
                                 TabNavigationItem(tab = SavedPage)
                             }

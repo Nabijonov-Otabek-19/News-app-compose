@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import uz.gita.newsappcompose.data.response.NewsData
-import uz.gita.newsappcompose.data.response.ResultData
+import uz.gita.newsappcompose.data.response.Result as Result1
 import uz.gita.newsappcompose.data.source.local.dao.NewsDao
 import uz.gita.newsappcompose.data.source.remote.Api
 import uz.gita.newsappcompose.utils.API_KEY
@@ -36,15 +36,15 @@ class NewsRepositoryImpl @Inject constructor(
         .catch { emit(Result.failure(it)) }
         .flowOn(Dispatchers.IO)
 
-    override fun addToSaved(resultData: ResultData) {
-        dao.add(resultData.toEntity())
+    override fun addToSaved(result: Result1) {
+        dao.add(result.toEntity())
     }
 
-    override fun deleteFromSaved(resultData: ResultData) {
-        dao.delete(resultData.toEntity())
+    override fun deleteFromSaved(result: Result1) {
+        dao.delete(result.toEntity())
     }
 
-    override fun getSavedNews(): Flow<List<ResultData>> =
+    override fun getSavedNews(): Flow<List<Result1>> =
         dao.getSavedNews().map { list ->
             list.map { data -> data.toData() }
         }

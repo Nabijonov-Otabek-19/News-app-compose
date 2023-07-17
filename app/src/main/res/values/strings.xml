@@ -2,5 +2,5 @@
     <string name="app_name">News app</string>
 
     <string name="home_tab">Home</string>
-    <string name="saved_tab">Shopping</string>
+    <string name="saved_tab">Favourite</string>
 </resources>

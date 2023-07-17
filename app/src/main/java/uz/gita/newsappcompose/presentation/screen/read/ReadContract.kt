@@ -1,7 +1,7 @@
 package uz.gita.newsappcompose.presentation.screen.read
 
 import org.orbitmvi.orbit.ContainerHost
-import uz.gita.newsappcompose.data.response.ResultData
+import uz.gita.newsappcompose.data.response.Result
 
 interface ReadContract {
     interface ViewModel : ContainerHost<UIState, SideEffect> {
@@ -18,9 +18,9 @@ interface ReadContract {
     }
 
     sealed interface Intent {
-        data class SaveNews(val resultData: ResultData) : Intent
-        data class DeleteNews(val resultData: ResultData) : Intent
-        data class CheckNews(val resultData: ResultData) : Intent
+        data class SaveNews(val result: Result) : Intent
+        data class DeleteNews(val result: Result) : Intent
+        data class CheckNews(val result: Result) : Intent
         object Back : Intent
     }
 

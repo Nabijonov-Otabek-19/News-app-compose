@@ -28,17 +28,17 @@ class ReadViewModel @Inject constructor(
             is ReadContract.Intent.CheckNews -> {
                 intent {
                     reduce {
-                        ReadContract.UIState.CheckNews(repository.checkSavedNews(intent.resultData.title))
+                        ReadContract.UIState.CheckNews(repository.checkSavedNews(intent.result.title))
                     }
                 }
             }
 
             is ReadContract.Intent.DeleteNews -> {
-                repository.deleteFromSaved(intent.resultData)
+                repository.deleteFromSaved(intent.result)
             }
 
             is ReadContract.Intent.SaveNews -> {
-                repository.addToSaved(intent.resultData)
+                repository.addToSaved(intent.result)
             }
         }
     }

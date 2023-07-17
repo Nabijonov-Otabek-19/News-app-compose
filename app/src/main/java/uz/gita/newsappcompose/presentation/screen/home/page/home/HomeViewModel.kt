@@ -43,7 +43,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeContract.Intent.OpenReadScreen -> {
                 viewModelScope.launch {
-                    direction.navigateToReadScreen(intent.resultData)
+                    direction.navigateToReadScreen(intent.result)
                 }
             }
         }

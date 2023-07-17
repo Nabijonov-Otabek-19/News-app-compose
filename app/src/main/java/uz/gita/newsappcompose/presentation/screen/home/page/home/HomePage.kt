@@ -1,6 +1,7 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -93,7 +94,9 @@ fun HomePageContent(
     onEventDispatcher: (HomeContract.Intent) -> Unit,
     modifier: Modifier
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier
+        .fillMaxSize()
+        .background(colorResource(id = R.color.light_gray))) {
 
         when (uiState.value) {
             HomeContract.UIState.Loading -> {
@@ -104,7 +107,9 @@ fun HomePageContent(
             is HomeContract.UIState.PrepareData -> {
                 val data = (uiState.value as HomeContract.UIState.PrepareData).newsData
 
-                if (data.resultData.isNullOrEmpty()) {
+                logger("HomePage = $data")
+
+                if (data.results.isNullOrEmpty()) {
                     Image(
                         modifier = Modifier.align(Alignment.Center),
                         painter = painterResource(id = R.drawable.ic_no_news),
@@ -112,9 +117,9 @@ fun HomePageContent(
                     )
                 } else {
                     LazyColumn {
-                        items(data.resultData.size) {
+                        items(data.results.size) {
                             NewsItemComponent(
-                                data.resultData[it],
+                                data.results[it],
                                 Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
                             ) { data ->
                                 onEventDispatcher.invoke(HomeContract.Intent.OpenReadScreen(data))

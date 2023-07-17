@@ -1,7 +1,7 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.saved
 
 import org.orbitmvi.orbit.ContainerHost
-import uz.gita.newsappcompose.data.response.ResultData
+import uz.gita.newsappcompose.data.response.Result
 
 interface SavedContract {
 
@@ -11,12 +11,12 @@ interface SavedContract {
 
     sealed interface Intent {
         object LoadLatestNews : Intent
-        class OpenReadScreen(val resultData: ResultData) : Intent
+        class OpenReadScreen(val result: Result) : Intent
     }
 
     sealed interface UIState {
         object Loading : UIState
-        data class PrepareData(val resultData: List<ResultData>) : UIState
+        data class PrepareData(val resultData: List<Result>) : UIState
     }
 
     sealed interface SideEffect {
@@ -24,6 +24,6 @@ interface SavedContract {
     }
 
     interface Direction {
-        suspend fun navigateToReadScreen(resultData: ResultData)
+        suspend fun navigateToReadScreen(result: Result)
     }
 }

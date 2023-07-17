@@ -1,6 +1,7 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.saved
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -21,7 +22,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import uz.gita.newsappcompose.R
 import uz.gita.newsappcompose.presentation.component.LoadingComponent
-import uz.gita.newsappcompose.presentation.component.NewsItemComponent
+import uz.gita.newsappcompose.presentation.component.SavedNewsComponent
 import uz.gita.newsappcompose.ui.theme.NewsAppComposeTheme
 import uz.gita.newsappcompose.utils.logger
 import uz.gita.newsappcompose.utils.toast
@@ -93,7 +94,11 @@ fun HomePageContent(
     modifier: Modifier
 ) {
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.light_gray))
+    ) {
 
         when (uiState.value) {
             SavedContract.UIState.Loading -> {
@@ -113,7 +118,7 @@ fun HomePageContent(
                 } else {
                     LazyColumn {
                         items(data.size) {
-                            NewsItemComponent(
+                            SavedNewsComponent(
                                 data[it],
                                 Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
                             ) { data ->

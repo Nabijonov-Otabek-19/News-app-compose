@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,7 +29,7 @@ import uz.gita.newsappcompose.R
 import uz.gita.newsappcompose.data.response.Result
 
 @Composable
-fun NewsItemComponent(
+fun SavedNewsComponent(
     result: Result,
     modifier: Modifier,
     onClick: (Result) -> Unit
@@ -42,43 +42,49 @@ fun NewsItemComponent(
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
+
         Column(modifier = Modifier.padding(8.dp)) {
-            AsyncImage(
-                alignment = Alignment.TopCenter,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(12.dp)),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(result.image_url)
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(id = R.drawable.image),
-                error = painterResource(id = R.drawable.image),
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-            )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = result.title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 16.sp,
-                    color = Color.Black
+                AsyncImage(
+                    alignment = Alignment.TopCenter,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(12.dp)),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(result.image_url)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(id = R.drawable.image),
+                    error = painterResource(id = R.drawable.image),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                 )
 
-                Text(
-                    text = result.description,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = result.title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 16.sp,
+                        color = Color.Black
+                    )
+
+                    Text(
+                        text = result.description,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                }
             }
 
             Row(
@@ -97,8 +103,8 @@ fun NewsItemComponent(
 
 @Preview(showBackground = true)
 @Composable
-fun NewsItemPreview() {
-    NewsItemComponent(result = Result(
+fun SavedNewsPreview() {
+    SavedNewsComponent(result = Result(
         category = listOf(),
         content = "Content",
         country = listOf(),

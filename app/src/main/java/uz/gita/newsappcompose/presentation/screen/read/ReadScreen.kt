@@ -1,33 +1,29 @@
 package uz.gita.newsappcompose.presentation.screen.read
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import cafe.adriel.voyager.hilt.getViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.orbitmvi.orbit.compose.collectAsState
 import uz.gita.newsappcompose.R
-import uz.gita.newsappcompose.data.response.ResultData
+import uz.gita.newsappcompose.data.response.Result
 import uz.gita.newsappcompose.navigation.AppScreen
 import uz.gita.newsappcompose.ui.theme.NewsAppComposeTheme
 import uz.gita.newsappcompose.utils.toast
 
-class ReadScreen(private val resultData: ResultData) : AppScreen() {
+class ReadScreen(private val result: Result) : AppScreen() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -37,16 +33,8 @@ class ReadScreen(private val resultData: ResultData) : AppScreen() {
 
         NewsAppComposeTheme {
             Surface(modifier = Modifier.fillMaxSize()) {
-                Scaffold(
-                    topBar = {
-                        TopBar(
-                            resultData,
-                            uiState,
-                            viewModel::onEventDispatcher
-                        )
-                    },
-                    content = { ReadScreenContent(resultData = resultData, Modifier.padding(it)) }
-                )
+                Scaffold(topBar = { TopBar(result, uiState, viewModel::onEventDispatcher) })
+                { ReadScreenContent(result = result, Modifier.padding(it)) }
             }
         }
     }
@@ -54,13 +42,13 @@ class ReadScreen(private val resultData: ResultData) : AppScreen() {
 
 @Composable
 fun TopBar(
-    resultData: ResultData,
+    result: Result,
     uiState: State<ReadContract.UIState>,
     onEventDispatcher: (ReadContract.Intent) -> Unit
 ) {
 
     val context = LocalContext.current
-    onEventDispatcher(ReadContract.Intent.CheckNews(resultData))
+    onEventDispatcher(ReadContract.Intent.CheckNews(result))
 
     when (uiState.value) {
         is ReadContract.UIState.CheckNews -> {
@@ -69,8 +57,7 @@ fun TopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = Color.White)
-                    .height(56.dp)
-                    .shadow(elevation = 4.dp),
+                    .height(56.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -89,19 +76,14 @@ fun TopBar(
                     modifier = Modifier.padding(end = 12.dp),
                     onClick = {
                         if (isSaved) {
-                            onEventDispatcher.invoke(
-                                ReadContract.Intent.DeleteNews(resultData)
-                            )
-                            toast(context, "Music Removed")
-
+                            onEventDispatcher(ReadContract.Intent.DeleteNews(result))
+                            toast(context, "News Removed")
                         } else {
-                            onEventDispatcher.invoke(
-                                ReadContract.Intent.SaveNews(resultData)
-                            )
-                            toast(context, "Music Saved")
+                            onEventDispatcher(ReadContract.Intent.SaveNews(result))
+                            toast(context, "News Saved")
                         }
 
-                        onEventDispatcher.invoke(ReadContract.Intent.CheckNews(resultData))
+                        onEventDispatcher(ReadContract.Intent.CheckNews(result))
                     }
                 ) {
                     Image(
@@ -120,7 +102,7 @@ fun TopBar(
 }
 
 @Composable
-fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
+fun ReadScreenContent(result: Result, modifier: Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -132,7 +114,7 @@ fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
                 .fillMaxWidth()
                 .height(200.dp),
             model = ImageRequest.Builder(LocalContext.current)
-                .data(resultData.image_url)
+                .data(result.image_url)
                 .crossfade(true)
                 .build(),
             placeholder = painterResource(id = R.drawable.image),
@@ -147,7 +129,7 @@ fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
                 .padding(8.dp)
         ) {
             Text(
-                text = resultData.title,
+                text = result.title,
                 fontSize = 20.sp,
                 color = Color.Black
             )
@@ -159,12 +141,12 @@ fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = resultData.source_id, fontSize = 14.sp)
-                Text(text = resultData.pubDate, fontSize = 14.sp)
+                Text(text = result.source_id, fontSize = 14.sp)
+                Text(text = result.pubDate, fontSize = 14.sp)
             }
 
             Text(
-                text = resultData.description,
+                text = result.description,
                 fontSize = 16.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Justify
@@ -172,7 +154,7 @@ fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
 
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = resultData.content,
+                text = result.content,
                 fontSize = 16.sp,
                 color = Color.Gray,
                 textAlign = TextAlign.Justify
@@ -180,62 +162,16 @@ fun ReadScreenContent(resultData: ResultData, modifier: Modifier) {
 
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
-                text = "Language : ${resultData.language}",
+                text = "Language : ${result.language}",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
 
             Text(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = resultData.link,
+                text = result.link,
                 fontSize = 16.sp,
                 color = Color.Gray
-            )
-        }
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Preview(showSystemUi = true)
-fun ReadScreenPreview() {
-    NewsAppComposeTheme {
-        Scaffold(topBar = {
-            TopBar(
-                resultData = ResultData(
-                    category = listOf(),
-                    content = "Content",
-                    country = listOf(),
-                    creator = listOf(),
-                    description = "Description",
-                    image_url = "",
-                    keywords = listOf(),
-                    language = "Language",
-                    link = "",
-                    pubDate = "20.02.2023",
-                    source_id = "Source id",
-                    title = "Title",
-                    video_url = Any()
-                ), mutableStateOf(ReadContract.UIState.Init)
-            ) {}
-        }) {
-            ReadScreenContent(
-                resultData = ResultData(
-                    category = listOf(),
-                    content = "Content",
-                    country = listOf(),
-                    creator = listOf(),
-                    description = "Description",
-                    image_url = "",
-                    keywords = listOf(),
-                    language = "Language",
-                    link = "",
-                    pubDate = "20.02.2023",
-                    source_id = "Source id",
-                    title = "Title",
-                    video_url = Any()
-                ), Modifier.padding(it)
             )
         }
     }
