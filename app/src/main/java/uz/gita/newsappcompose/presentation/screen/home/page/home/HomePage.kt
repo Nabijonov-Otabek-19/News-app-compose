@@ -1,5 +1,6 @@
 package uz.gita.newsappcompose.presentation.screen.home.page.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.hilt.getViewModel
@@ -92,11 +94,13 @@ fun TopBar(modifier: Modifier = Modifier) {
 fun HomePageContent(
     uiState: State<HomeContract.UIState>,
     onEventDispatcher: (HomeContract.Intent) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier
-        .fillMaxSize()
-        .background(colorResource(id = R.color.light_gray))) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.light_gray))
+    ) {
 
         when (uiState.value) {
             HomeContract.UIState.Loading -> {
